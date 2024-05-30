@@ -10,11 +10,11 @@ app = Flask(__name__)
 # Load the models
 img2img_model = StableDiffusionImg2ImgPipeline.from_pretrained(
     "CompVis/stable-diffusion-v1-4", torch_dtype=torch.float16, low_cpu_mem_usage=True)
-img2img_model = img2img_model.to("mps")
+img2img_model = img2img_model.to("cpu")
 
 text2img_model = StableDiffusionPipeline.from_pretrained(
     "CompVis/stable-diffusion-v1-4",torch_dtype=torch.float16, low_cpu_mem_usage=True)
-text2img_model = text2img_model.to("mps")
+text2img_model = text2img_model.to("cpu")
 
 @app.route('/generate_image', methods=['POST'])
 def generate_image():
@@ -44,4 +44,4 @@ def generate_image():
         return send_file(save_path, mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run()
